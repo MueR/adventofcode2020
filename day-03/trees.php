@@ -15,6 +15,7 @@ function travel(array $map, int $stepLeft, int $stepDown)
 
     return $trees;
 }
+print 'Part 1: ' . travel($map, 3, 1) . "\n";
 
 $total = 1;
 foreach ([[1,1],[3,1],[5,1],[7,1],[1,2]] as $steps) {
@@ -23,4 +24,4 @@ foreach ([[1,1],[3,1],[5,1],[7,1],[1,2]] as $steps) {
     printf("Left: %d, down: %d, result: %d trees, total %d\n", $steps[0], $steps[1], $result, $total);
 }
 
-print $total . "\n\n";
+print 'Part 2: ' . $total . "\n\n";
