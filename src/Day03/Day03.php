@@ -1,15 +1,15 @@
 <?php
 
-
 namespace MueR\AdventOfCode2020\Day03;
-
 
 use MueR\AdventOfCode2020\AbstractSolver;
 
 class Day03 extends AbstractSolver
 {
     private int $charsInLine;
+
     private int $numLines;
+
     public function __construct()
     {
         parent::__construct();
@@ -26,7 +26,7 @@ class Day03 extends AbstractSolver
     public function partTwo(): int
     {
         $total = 1;
-        foreach ([[1,1],[3,1],[5,1],[7,1],[1,2]] as $steps) {
+        foreach ([[1, 1], [3, 1], [5, 1], [7, 1], [1, 2]] as $steps) {
             $result = $this->travel($steps[0], $steps[1]);
             $total *= $result;
         }

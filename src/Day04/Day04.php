@@ -12,14 +12,8 @@ class Day04 extends AbstractSolver
     #[Pure] public function partOne(): int
     {
         $requiredFields = [
-            'byr',
-            'iyr',
-            'eyr',
-            'hgt',
-            'hcl',
-            'ecl',
-            'pid',
-            //'cid',
+            'byr', 'iyr', 'eyr', 'hgt',
+            'hcl', 'ecl', 'pid',
         ];
 
         $valid = 0;
@@ -27,7 +21,7 @@ class Day04 extends AbstractSolver
             $passKeys = \array_keys($passport);
             $intersect = \array_intersect($requiredFields, $passKeys);
             if (count($intersect) === count($requiredFields)) {
-                $valid ++;
+                $valid++;
             }
         }
 
@@ -37,24 +31,19 @@ class Day04 extends AbstractSolver
     public function partTwo(): int
     {
         $requiredFields = [
-            'byr' => fn ($test) => \preg_match('/^[\d]{4}$/', $test) && $this->numBetween((int)$test, 1920, 2002),
-            'iyr' => fn ($test) => \preg_match('/^20(1[\d]|20)$/', $test) && $this->numBetween((int)$test, 2010, 2020),
-            'eyr' => fn ($test) => \preg_match('/^20(2[\d]|30)$/', $test) && $this->numBetween((int)$test, 2020, 2030),
+            'byr' => fn($test) => \preg_match('/^[\d]{4}$/', $test) && $this->numBetween((int)$test, 1920, 2002),
+            'iyr' => fn($test) => \preg_match('/^20(1[\d]|20)$/', $test) && $this->numBetween((int)$test, 2010, 2020),
+            'eyr' => fn($test) => \preg_match('/^20(2[\d]|30)$/', $test) && $this->numBetween((int)$test, 2020, 2030),
             'hgt' => function ($test) {
                 if (!\preg_match('/^(\d{2,3})(cm|in)$/', $test)) {
                     return false;
                 }
-                if (false !== \stripos($test, 'cm')) {
-                    return $this->numBetween((int)$test, 150, 193);
-                }
-                if (false !== \stripos($test, 'in')) {
-                    return $this->numBetween((int)$test, 59, 76);
-                }
-                return false;
+                return (false !== \stripos($test, 'cm') && $this->numBetween((int)$test, 150, 193))
+                    || (false !== \stripos($test, 'in') && $this->numBetween((int)$test, 59, 76));
             },
-            'hcl' => fn ($test) => \preg_match('/^#[0-9a-f]{6}$/i', $test),
-            'ecl' => fn ($test) => \preg_match('/^(amb|blu|brn|gry|grn|hzl|oth)$/', $test),
-            'pid' => fn ($test) => \preg_match('/^[\d]{9}$/', $test),
+            'hcl' => fn($test) => \preg_match('/^#[0-9a-f]{6}$/i', $test),
+            'ecl' => fn($test) => \preg_match('/^(amb|blu|brn|gry|grn|hzl|oth)$/', $test),
+            'pid' => fn($test) => \preg_match('/^[\d]{9}$/', $test),
         ];
 
         foreach ($this->passports as $index => $passport) {
@@ -69,7 +58,7 @@ class Day04 extends AbstractSolver
         return count($this->passports);
     }
 
-    protected function numBetween(int $val, $min, $max): bool
+    protected function numBetween(int $val, int $min, int $max): bool
     {
         return $val >= $min && $val <= $max;
     }
@@ -78,19 +67,12 @@ class Day04 extends AbstractSolver
     {
         parent::readInput();
 
-        $this->passports = \explode("\n\n", $this->input);
-        $this->passports = \array_map(function ($passport) {
-            $parts = [];
-            $result = [];
-            \preg_match_all('/([a-z]+:[\S]+)/im', $passport, $parts);
-            foreach ($parts[1] as $part) {
-                \preg_match('/([a-z]+):\s?([\S]+)/m', $part, $match);
-                \array_shift($match);
-                if (\count($match) === 2) {
-                    $result[$match[0]] = $match[1];
-                }
-            }
-            return $result;
-        }, $this->passports);
+        $this->passports = \array_map(
+            static function ($passport) {
+                \preg_match_all('/((?<keys>[a-z]+):\s?(?<values>[\S]+))/im', $passport, $parts);
+                return \array_combine($parts['keys'], $parts['values']);
+            },
+            \explode("\n\n", $this->input)
+        );
     }
 }
