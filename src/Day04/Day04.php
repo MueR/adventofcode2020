@@ -3,18 +3,6 @@
 namespace MueR\AdventOfCode2020\Day04;
 
 use MueR\AdventOfCode2020\AbstractSolver;
-use function array_combine;
-use function array_filter;
-use function array_intersect;
-use function array_key_exists;
-use function array_keys;
-use function array_map;
-use function count;
-use function explode;
-use function preg_match;
-use function preg_match_all;
-use function stripos;
-use const ARRAY_FILTER_USE_BOTH;
 
 class Day04 extends AbstractSolver
 {
@@ -55,10 +43,8 @@ class Day04 extends AbstractSolver
 
     public function partTwo(): int
     {
-        return count(
-            array_filter($this->passports, function ($passport) {
-            return $this->numberOfTests === count(
-                    array_filter($this->requiredFields, static function ($testFn, $field) use ($passport) {
+        return count(array_filter($this->passports, function ($passport) {
+            return $this->numberOfTests === count(array_filter($this->requiredFields, static function ($testFn, $field) use ($passport) {
                 return array_key_exists($field, $passport) && $testFn($passport[$field]);
             }, ARRAY_FILTER_USE_BOTH));
         }));

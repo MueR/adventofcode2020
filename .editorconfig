@@ -16,7 +16,7 @@ ij_continuation_indent_size = 4
 # ij_formatter_tags_enabled = false
 # ij_smart_tabs = false
 # ij_wrap_on_typing = false
-ij_visual_guides = 120
+ij_visual_guides = 160
 
 [*.css]
 ij_css_align_closing_brace_with_properties = false

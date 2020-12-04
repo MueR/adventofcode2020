@@ -3,10 +3,6 @@
 namespace MueR\AdventOfCode2020\Day02;
 
 use MueR\AdventOfCode2020\AbstractSolver;
-use function array_filter;
-use function count;
-use function substr;
-use function substr_count;
 
 class Day02 extends AbstractSolver
 {
