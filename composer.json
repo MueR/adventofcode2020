@@ -7,7 +7,9 @@
             "email": "bas@muer.nl"
         }
     ],
-    "require": {},
+    "require": {
+        "php": ">=8"
+    },
     "autoload": {
         "psr-4": {
             "MueR\\AdventOfCode2020\\": "src/"
