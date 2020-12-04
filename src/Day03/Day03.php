@@ -3,6 +3,9 @@
 namespace MueR\AdventOfCode2020\Day03;
 
 use MueR\AdventOfCode2020\AbstractSolver;
+use function count;
+use function strlen;
+use function substr;
 
 class Day03 extends AbstractSolver
 {
