@@ -1,0 +1,16 @@
+{
+    "name": "muer/adventofcode2020",
+    "type": "project",
+    "authors": [
+        {
+            "name": "MueR",
+            "email": "bas@muer.nl"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "MueR\\AdventOfCode2020\\": "src/"
+        }
+    }
+}

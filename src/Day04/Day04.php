@@ -1,20 +1,15 @@
 <?php
 
-namespace AdventOfCode2020\Day04;
+namespace MueR\AdventOfCode2020\Day04;
 
-use AdventOfCode2020\AbstractSolver;
+use JetBrains\PhpStorm\Pure;
+use MueR\AdventOfCode2020\AbstractSolver;
 
-class CheckPassport extends AbstractSolver
+class Day04 extends AbstractSolver
 {
-    public function __construct(
-        private array $passports = []
-    ) {
-        parent::__construct(4);
+    private array $passports = [];
 
-        $this->readInput();
-    }
-
-    public function partOne(): int
+    #[Pure] public function partOne(): int
     {
         $requiredFields = [
             'byr',
@@ -79,7 +74,7 @@ class CheckPassport extends AbstractSolver
         return $val >= $min && $val <= $max;
     }
 
-    protected function readInput()
+    protected function readInput(): void
     {
         parent::readInput();
 
@@ -87,9 +82,9 @@ class CheckPassport extends AbstractSolver
         $this->passports = \array_map(function ($passport) {
             $parts = [];
             $result = [];
-            \preg_match_all('/([a-z]+:[^\s]+)/im', $passport, $parts);
+            \preg_match_all('/([a-z]+:[\S]+)/im', $passport, $parts);
             foreach ($parts[1] as $part) {
-                \preg_match('/([a-z]+):\s?([^\s]+)/m', $part, $match);
+                \preg_match('/([a-z]+):\s?([\S]+)/m', $part, $match);
                 \array_shift($match);
                 if (\count($match) === 2) {
                     $result[$match[0]] = $match[1];
