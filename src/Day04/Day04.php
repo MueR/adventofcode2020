@@ -2,7 +2,6 @@
 
 namespace MueR\AdventOfCode2020\Day04;
 
-use JetBrains\PhpStorm\Pure;
 use MueR\AdventOfCode2020\AbstractSolver;
 
 class Day04 extends AbstractSolver
@@ -33,18 +32,12 @@ class Day04 extends AbstractSolver
         $this->numberOfTests = \count($this->requiredFields);
     }
 
-    #[Pure] public function partOne(): int
+    public function partOne(): int
     {
-        $valid = 0;
-        foreach ($this->passports as $index => $passport) {
-            $passKeys = \array_keys($passport);
-            $intersect = \array_intersect(\array_keys($this->requiredFields), $passKeys);
-            if (count($intersect) === count(\array_keys($this->requiredFields))) {
-                $valid++;
-            }
-        }
-
-        return $valid;
+        $reqFields = \array_keys($this->requiredFields);
+        return \count(\array_filter($this->passports, function ($passport) use ($reqFields) {
+            return $this->numberOfTests === \count(\array_intersect($reqFields, \array_keys($passport)));
+        }));
     }
 
     public function partTwo(): int
@@ -54,11 +47,6 @@ class Day04 extends AbstractSolver
                 return \array_key_exists($field, $passport) && $testFn($passport[$field]);
             }, \ARRAY_FILTER_USE_BOTH));
         }));
-    }
-
-    protected function numBetween(int $val, int $min, int $max): bool
-    {
-        return $val >= $min && $val <= $max;
     }
 
     protected function readInput(): void
@@ -72,5 +60,10 @@ class Day04 extends AbstractSolver
             },
             \explode("\n\n", $this->input)
         );
+    }
+
+    private function numBetween(int $val, int $min, int $max): bool
+    {
+        return $val >= $min && $val <= $max;
     }
 }
