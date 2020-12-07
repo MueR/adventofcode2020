@@ -47,8 +47,7 @@ class Day07 extends AbstractSolver
 
         $possible = [];
         foreach ($this->canContain[$bag] as $bagType) {
-            $possible[] = $bagType;
-            array_push($possible, ...$this->resolveUp($bagType));
+            array_push($possible, $bagType, ...$this->resolveUp($bagType));
         }
 
         return $possible;
