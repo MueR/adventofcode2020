@@ -23,13 +23,9 @@ function printDay(int $day): array
 {
     $class = sprintf('MueR\\AdventOfCode2020\\Day%02d\\Day%02d', $day, $day);
 
-    echo sprintf('--- Day %s ---', $day) . PHP_EOL;
-
     $dayString = sprintf('%02d', $day);
 
     if (!class_exists($class)) {
-        //echo 'Skipped day because '.$class.' does not exist' . PHP_EOL;
-
         return [
             'day' => $day,
         ];
