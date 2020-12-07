@@ -28,11 +28,13 @@ function printDay(int $day): array
     $dayString = sprintf('%02d', $day);
 
     if (!class_exists($class)) {
-        echo 'Skipped day because '.$class.' does not exist' . PHP_EOL;
+        //echo 'Skipped day because '.$class.' does not exist' . PHP_EOL;
 
         return [
             'day' => $day,
         ];
+    } else {
+        echo sprintf('--- Day %s ---', $day) . PHP_EOL;
     }
 
     try {
