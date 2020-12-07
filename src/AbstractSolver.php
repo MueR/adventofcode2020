@@ -1,11 +1,8 @@
 <?php
 
-namespace MueR\AdventOfCode2020;
+declare(strict_types=1);
 
-use function get_class;
-use function preg_match;
-use function strrpos;
-use function substr;
+namespace MueR\AdventOfCode2020;
 
 abstract class AbstractSolver
 {

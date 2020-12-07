@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MueR\AdventOfCode2020\Day03;
 
 use MueR\AdventOfCode2020\AbstractSolver;

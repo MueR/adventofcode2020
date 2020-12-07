@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace MueR\AdventOfCode2020\Day05;
-
 
 use JetBrains\PhpStorm\Pure;
 use MueR\AdventOfCode2020\AbstractSolver;
@@ -39,14 +39,14 @@ class Day05 extends AbstractSolver
     {
         $parts = str_split($rowPartition, 1);
         $min = 0;
-        $diff = ceil($max / 2);
+        $diff = (int)ceil($max / 2);
         do {
             $letter = array_shift($parts);
             match ($letter) {
                 'B','R' => $min += $diff,
                 'F','L' => $max -= $diff,
             };
-            $diff = ceil($diff / 2);
+            $diff = (int)ceil($diff / 2);
         } while (!empty($parts));
 
         return $min;
