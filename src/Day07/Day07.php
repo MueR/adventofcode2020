@@ -8,12 +8,10 @@ class Day07 extends AbstractSolver
 {
     private array $rules = [];
     private array $canContain = [];
-    private int $contains = 0;
 
     public function partOne(): int
     {
-        $possible = $this->resolveUp('shiny gold');
-        return count(array_unique($possible));
+        return count(array_unique($this->resolveUp('shiny gold')));
     }
 
     public function partTwo(): int
@@ -33,15 +31,11 @@ class Day07 extends AbstractSolver
             if ('no other bags' === $matches['contains']) {
                 continue;
             }
-            foreach (explode(',', $matches['contains']) as $contentRule) {
+            array_map(function ($contentRule) use ($container) {
                 preg_match('/(?<amount>\d+) (?<type>.*)/i', trim(preg_replace('/bags?/', '', $contentRule)), $contents);
                 $this->rules[$container][($contents['type'])] = (int)$contents['amount'];
-
-                $this->canContain[($contents['type'])] = array_merge(
-                    $this->canContain[($contents['type'])] ?? [],
-                   [$container]
-                );
-            }
+                $this->canContain[($contents['type'])] = array_merge($this->canContain[($contents['type'])] ?? [], [$container]);
+            }, explode(',', $matches['contains']));
         }
     }
 
