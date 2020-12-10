@@ -14,5 +14,8 @@
         "psr-4": {
             "MueR\\AdventOfCode2020\\": "src/"
         }
+    },
+    "require-dev": {
+        "symfony/stopwatch": "^5.2"
     }
 }

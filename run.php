@@ -15,39 +15,38 @@ if (array_key_exists(1, $arguments)) {
     $informationArray[] = printDay((int)$day);
 } else {
     foreach (range(1, 24) as $day) {
-        $informationArray[] = printDay((int)$day);
+        if (null !== $dayData = printDay($day)) {
+            $informationArray[] = $dayData;
+        }
     }
 }
 
-function printDay(int $day): array
+function printDay(int $day): array|null
 {
     $class = sprintf('MueR\\AdventOfCode2020\\Day%02d\\Day%02d', $day, $day);
-
     $dayString = sprintf('%02d', $day);
 
     if (!class_exists($class)) {
-        return [
-            'day' => $day,
-        ];
-    } else {
-        echo sprintf('--- Day %s ---', $day) . PHP_EOL;
+        return null;
     }
 
     try {
         /** @var AbstractSolver $instance */
         $instance = new $class();
+        $instance->lap();
     } catch (RuntimeException $e) {
         echo 'Skipped day because "' . $e->getMessage() . '"' . PHP_EOL;
 
         return [
             'day' => $dayString,
-            'part_one_solution' => null,
-            'part_two_solution' => null,
+            'partOneSolution' => null,
+            'partTwoSolution' => null,
         ];
     }
 
     try {
         $partOneSolution = $instance->partOne();
+        $instance->lap();
     } catch (RuntimeException $e) {
         $partOneSolution = 'Skipped part 1 because "' . $e->getMessage() . '"';
         echo $partOneSolution . PHP_EOL;
@@ -62,18 +61,22 @@ function printDay(int $day): array
 
     return [
         'day' => $dayString,
-        'part_one_solution' => $partOneSolution,
-        'part_two_solution' => $partTwoSolution,
+        'partOneSolution' => $partOneSolution,
+        'partTwoSolution' => $partTwoSolution,
+        'time' => $instance->stop(),
     ];
 }
 
-$content = '';
-
+printf("| Day | %-20s | %-20s | %-20s |\n", 'Solution 1', 'Solution 2', 'Diagnostics');
+printf("|-----|%1\$s|%1\$s|%1\$s|\n", str_repeat('-', 22));
 foreach ($informationArray as $information) {
-    $content .= '| ' . sprintf('%02d', $information['day']) . ' ';
-    $content .= '| ' . ($information['part_one_solution'] ?? '-') . ' ';
-    $content .= '| ' . ($information['part_two_solution'] ?? '-') . ' ';
-    $content .= "|\n";
-}
+    printf(
+        "| %3d | %20d | %20d | %6.2F MiB - %4d ms |\n",
+        $information['day'],
+        $information['partOneSolution'] ?? -1,
+        $information['partTwoSolution'] ?? -1,
+        $information['time']?->getMemory() / 1024 / 1024,
+        $information['time']?->getDuration()
 
-print $content;
+    );
+}

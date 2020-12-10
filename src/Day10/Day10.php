@@ -22,7 +22,7 @@ class Day10 extends AbstractSolver
         $d1 = 0;
         $d3 = 1;
         $last = 0;
-        foreach ($this->adapters as $i => $jolts) {
+        foreach ($this->adapters as $jolts) {
             match ($jolts - $last) { 1 => $d1++, 3 => $d3++ };
             $last = $jolts;
         }
@@ -38,9 +38,7 @@ class Day10 extends AbstractSolver
     protected function readInput(): void
     {
         parent::readInput();
-
-        $this->adapters = explode("\n", $this->input);
-        $this->adapters = array_map(static fn ($jolts) => (int)$jolts, $this->adapters);
+        $this->adapters = array_map(static fn ($jolts) => (int)$jolts, explode("\n", $this->input));
         sort($this->adapters, SORT_NUMERIC);
     }
 
