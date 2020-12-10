@@ -21,12 +21,9 @@ class Day10 extends AbstractSolver
     {
         $d1 = 0;
         $d3 = 1;
-        $last = 0;
-        foreach ($this->adapters as $jolts) {
-            match ($jolts - $last) { 1 => $d1++, 3 => $d3++ };
-            $last = $jolts;
+        foreach ($this->adapters as $idx => $jolts) {
+            match ($jolts - ($this->adapters[$idx - 1] ?? 0)) { 1 => $d1++, 3 => $d3++ };
         }
-
         return $d1 * $d3;
     }
 
