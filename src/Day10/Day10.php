@@ -19,12 +19,9 @@ class Day10 extends AbstractSolver
 
     #[Pure] public function partOne(): int
     {
-        $d1 = 0;
-        $d3 = 1;
-        foreach ($this->adapters as $idx => $jolts) {
-            match ($jolts - ($this->adapters[$idx - 1] ?? 0)) { 1 => $d1++, 3 => $d3++ };
-        }
-        return $d1 * $d3;
+        $d = [0,0,0,1];
+        array_walk($this->adapters, function ($jolts, $idx) use (&$d) { $d[($jolts - ($this->adapters[$idx - 1] ?? 0))]++; });
+        return $d[1] * $d[3];
     }
 
     public function partTwo(): int
