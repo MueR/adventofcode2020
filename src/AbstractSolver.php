@@ -9,7 +9,7 @@ use Symfony\Component\Stopwatch\StopwatchEvent;
 
 abstract class AbstractSolver
 {
-    protected Stopwatch $stopwatch;
+    private Stopwatch $stopwatch;
     protected string|array $input;
     private string $ns;
     public int $day;
