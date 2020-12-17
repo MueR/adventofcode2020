@@ -76,12 +76,13 @@ class Day16 extends AbstractSolver
         $certainMatches = [];
         while (count($certainMatches) !== $columns) {
             foreach ($possibleMatches as $name => $options) {
-                if (1 === count($options)) {
-                    $certainMatches[$name] = array_shift($options);
-                    unset($possibleMatches[$name]);
-                    foreach ($possibleMatches as $i => $match) {
-                        $possibleMatches[$i] = array_filter($match, static fn ($val) => $val !== $certainMatches[$name]);
-                    }
+                if (1 !== count($options)) {
+                    continue;
+                }
+                $certainMatches[$name] = array_shift($options);
+                unset($possibleMatches[$name]);
+                foreach ($possibleMatches as $i => $match) {
+                    $possibleMatches[$i] = array_filter($match, static fn ($val) => $val !== $certainMatches[$name]);
                 }
             }
         }
