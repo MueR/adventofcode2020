@@ -4,27 +4,31 @@ declare(strict_types=1);
 
 namespace MueR\AdventOfCode2020\Day17;
 
-use JetBrains\PhpStorm\Pure;
 use MueR\AdventOfCode2020\AbstractSolver;
 use SplObjectStorage;
+use Traversable;
 
 class Day17 extends AbstractSolver
 {
+    private CubeGrid $grid;
+
     public function __construct()
     {
         parent::__construct();
 
-
+        $this->grid = new CubeGrid();
     }
 
     public function partOne(): int
     {
-        return -1;
+        $this->grid->simulate(6);
+
+        return $this->grid->cubes->count();
     }
 
     public function partTwo(): int
     {
-        return -1;
+        return $this->grid->cubes->count();
     }
 }
 
@@ -73,8 +77,7 @@ class CubeGrid
         $this->cubes[$cube] = false;
     }
 
-    /** @returns Cube[] */
-    public function getNeighbours(Cube $cube): iterable
+    public function getNeighbours(Cube $cube): Traversable
     {
         $target = clone $cube;
         for ($x = $cube->x - 1; $x <= $cube->x + 1; $x++) {
@@ -82,7 +85,7 @@ class CubeGrid
                 for ($z = $cube->z - 1; $z < $cube->z + 1; $z++) {
                     $target->setCoordinates($x, $y, $z);
                     if ($target !== $cube && $this->cubes->contains($target)) {
-                        yield $this->cubes[$target];
+                        yield $target;
                     }
                 }
             }
@@ -96,7 +99,41 @@ class CubeGrid
             $toDeactivate = [];
 
             foreach ($this->cubes as $cube => $state) {
-                //$activeNeighbours = count(array_filter(iterator_to_array($this->getNeighbours($cube)), fn ($state) => $state))
+                $activeNeighbours = count(iterator_to_array($this->getActiveNeighbours($cube)));
+                if ($activeNeighbours !== 2 && $activeNeighbours !== 3) {
+                    $toDeactivate[] = $cube;
+                }
+
+                /**
+                 * @var Cube $neighbour
+                 * @var boolean $neighbourState
+                 */
+                foreach ($this->getInactiveNeighbours($cube) as $neighbour => $neighbourState) {
+                    if (count(iterator_to_array($this->getActiveNeighbours($neighbour)))) {
+                        $toActivate[] = $neighbour;
+                    }
+                }
+            }
+
+            foreach ($toActivate as $cube) { $this->activate($cube); }
+            foreach ($toDeactivate as $cube) { $this->deactivate($cube); }
+        }
+    }
+
+    private function getActiveNeighbours(Cube $cube): Traversable
+    {
+        foreach ($this->getNeighbours($cube) as $neighbour => $neighbourState) {
+            if (true === $neighbourState) {
+                yield $neighbour;
+            }
+        }
+    }
+
+    private function getInactiveNeighbours(Cube $cube): Traversable
+    {
+        foreach ($this->getNeighbours($cube) as $neighbour => $neighbourState) {
+            if (false === $neighbourState) {
+                yield $neighbour;
             }
         }
     }
